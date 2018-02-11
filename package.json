@@ -1,0 +1,56 @@
+{
+  "name": "reactjs-form",
+  "description": "A higher order component decorator for forms using React Component state",
+  "main": "./src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skmail/reactjs-form"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "react-form",
+    "form",
+    "decorator",
+    "validation"
+  ],
+  "version": "0.1.0",
+  "author": "Solaiman Kmail <psokmail@gmail.com> (https://github.com/skmail)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/skmail/reactjs-form/issues"
+  },
+  "dependencies": {
+    "flat": "4.0.0",
+    "react": "16.2.0",
+    "react-dom": "16.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.0.0-beta.39",
+    "@babel/preset-env": "7.0.0-beta.39",
+    "@babel/preset-react": "7.0.0-beta.39",
+    "babel-jest": "22.2.2",
+    "jest": "22.2.2",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.39",
+    "babel-core": "^7.0.0-0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/tests/**/*.js"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testRegex": "tests/.*\\.test\\.js$",
+    "testEnvironment": "jsdom"
+  }
+}
