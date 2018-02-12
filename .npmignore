@@ -1,0 +1,14 @@
+coverage
+examples
+src
+.babelrc
+.eslint*
+.flowconfig
+.idea
+.gitignore
+.npmignore
+.travis.yml
+package-lock.json
+yarn.lock
+LICENSE
+yarn-error.log
