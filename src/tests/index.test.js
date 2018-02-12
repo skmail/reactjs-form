@@ -21,7 +21,7 @@ const getComonent = () => (
     },
     messages: {
       "required.email": "email is required.",
-      "required.items.0.required" : "Item 0 is required"
+      "required.items.0.required": "Item 0 is required"
     }
   })
 )
@@ -144,6 +144,8 @@ describe('#2 Validation onBlur with default messages', () => {
       type: "text",
       value: ""
     }
+  }).then(() => {
+  }).catch(() => {
   })
 
   it('Print Messages JSX element', () => {
@@ -470,7 +472,7 @@ describe('setValues', () => {
     email: "psokmail@gmail.com",
     items: [{id: 1}],
     tags: ["javascript", "react"]
-  };
+  }
 
   rendered.props().setValues(values)
 
@@ -504,13 +506,6 @@ describe('Reset', () => {
       value: ""
     }
   })
-
-  const values = {
-    name: "Solaiman",
-    email: "psokmail@gmail.com",
-    items: [{id: 1}],
-    tags: ["javascript", "react"]
-  };
 
   rendered.props().reset()
 
