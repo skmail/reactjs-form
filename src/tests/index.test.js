@@ -21,7 +21,7 @@ const getComonent = () => (
     },
     messages: {
       "required.email": "email is required.",
-      "required.items.0.required": "Item 0 is required"
+      "required.items.0.name": "Item 0 is required"
     }
   })
 )
@@ -209,6 +209,46 @@ describe('#3 Validation with custom messages', () => {
   it('Print plain text message', () => {
     expect(rendered.props().error("email", true)).toEqual('email is required.')
   })
+
+})
+
+describe('Validation Array with custom messages', () => {
+  const Component = getComonent()
+  const rendered = shallow(<Component/>)
+
+  rendered.props().addValue("items",{
+    name:""
+  })
+
+  rendered.props().validate().then(() => {
+
+  }).catch(() => {
+
+  })
+
+  it('Print Messages JSX element', () => {
+    expect(shallow(rendered.props().error("items.0.name")).html()).toEqual('<span class="">Item 0 is required</span>')
+  })
+  //
+  // it('Print Messages JSX element with className', () => {
+  //   expect(shallow(rendered.props().error("name", "is-invalid")).html()).toEqual('<span class="is-invalid">The name field is required.</span>')
+  // })
+  //
+  // it('Print plain text message', () => {
+  //   expect(rendered.props().error("name", true)).toEqual('The name field is required.')
+  // })
+  //
+  // it('Print Messages JSX element', () => {
+  //   expect(shallow(rendered.props().error("email")).html()).toEqual('<span class="">email is required.</span>')
+  // })
+  //
+  // it('Print Messages JSX element with className', () => {
+  //   expect(shallow(rendered.props().error("email", "is-invalid")).html()).toEqual('<span class="is-invalid">email is required.</span>')
+  // })
+  //
+  // it('Print plain text message', () => {
+  //   expect(rendered.props().error("email", true)).toEqual('email is required.')
+  // })
 
 })
 

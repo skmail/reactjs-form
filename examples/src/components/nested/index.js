@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import Form from 'reactjs-form'
 
 import SkillsForm from './skills-form'
 import ReactJson from 'react-json-view'
 
-import {default as uuidV4} from 'uuid/v4';
+import {default as uuidV4} from 'uuid/v4'
 
 const TextInput = ({label, hasError, error, value, ...rest}) => (
   <div className="field">
@@ -21,22 +21,6 @@ const TextInput = ({label, hasError, error, value, ...rest}) => (
 )
 
 
-const CheckboxInput = ({label, hasError, onChange, error, ...rest}) => (
-  <div className="field">
-    <div className={`control ${hasError(rest.name, "is-danger", "")}`}>
-      <label className="checkbox" htmlFor={`checkbox-${rest.name}`}>
-        <input
-          id={`checkbox-${rest.name}`}
-          onChange={onChange}
-          type="checkbox"
-          {...rest}
-        />{ ' ' }
-        {label}</label>
-    </div>
-    {error(rest.name, "help is-danger")}
-  </div>
-)
-
 class DeepInputs extends Component {
 
   constructor(props) {
@@ -45,6 +29,9 @@ class DeepInputs extends Component {
   }
 
   render() {
+    console.log(
+      this.props.errors()
+    )
     return (
       <form onSubmit={this.onSubmit}>
 
@@ -152,13 +139,15 @@ class DeepInputs extends Component {
           }
         </div>
       </form>
-    );
+    )
   }
 
   onSubmit(e) {
     e.preventDefault()
     this.props.validate().then(() => {
       // continue
+    }).catch(() => {
+
     })
   }
 }
@@ -168,15 +157,15 @@ export default Form(DeepInputs, {
   rules: {
     'employees.*.name': "required",
     'employees.*.email': "required|email",
-    'employees.*.skills':'required'
+    'employees.*.skills': 'required'
   },
   messages: {
     'required.employees.*.name': "Employee name is required",
     'required.employees.*.email': "Employee email is required",
     'email.employees.*.email': "Invalid email address",
-    'required.employees.*.skills':"You must add 1 skill at least"
+    'required.employees.*.skills': "You must add 1 skill at least"
   },
   defaultValues: {
     employees: []
   }
-});
+})
