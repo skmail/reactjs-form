@@ -1,8 +1,10 @@
+// @flow
+
 import replaceIndexWithWildCard from './replace-index-with-wildcard'
 
-export default (name, rules) => {
+export default (name: string, rules: Object) : Object => {
   const wildcardRule = replaceIndexWithWildCard(name)
-  const resultRules = [];
+  const resultRules = []
   /* istanbul ignore else */
   if (rules[name]) {
     resultRules.push(rules[name])
@@ -23,4 +25,4 @@ export default (name, rules) => {
       }, [])
       .filter((elem, pos, arr) => arr.indexOf(elem) === pos)
   }
-};
+}

@@ -1,4 +1,6 @@
-export default (rules, ownProps = []) => (
+// @flow
+
+export default (rules: Object, ownProps: Array<any> = []): Object => (
   Object.keys(rules).reduce((acc, name) => {
     if (Array.isArray(rules[name])) {
       acc[name] = rules[name].map((item) => {
@@ -9,8 +11,8 @@ export default (rules, ownProps = []) => (
             } else {
               acc[validator] = item[validator]
             }
-            return acc;
-          }, {});
+            return acc
+          }, {})
         }
         return item
       })

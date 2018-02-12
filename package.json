@@ -22,20 +22,40 @@
   },
   "dependencies": {
     "flat": "4.0.0",
+    "immutability-helper": "2.6.4",
     "react": "16.2.0",
-    "react-dom": "16.2.0"
+    "react-dom": "16.2.0",
+    "validatorjs": "3.14.2"
   },
   "devDependencies": {
     "@babel/core": "7.0.0-beta.39",
-    "@babel/preset-env": "7.0.0-beta.39",
-    "@babel/preset-react": "7.0.0-beta.39",
-    "babel-jest": "22.2.2",
-    "jest": "22.2.2",
     "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.39",
-    "babel-core": "^7.0.0-0"
+    "@babel/preset-env": "7.0.0-beta.39",
+    "@babel/preset-flow": "7.0.0-beta.39",
+    "@babel/preset-react": "7.0.0-beta.39",
+    "babel-cli": "6.26.0",
+    "babel-core": "^7.0.0-0",
+    "babel-eslint": "8.2.1",
+    "babel-jest": "22.2.2",
+    "enzyme": "3.3.0",
+    "enzyme-adapter-react-16": "1.1.1",
+    "eslint": "4.17.0",
+    "eslint-config-react-app": "2.1.0",
+    "eslint-plugin-flowtype": "2.43.0",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-jsx-a11y": "5.1.1",
+    "eslint-plugin-react": "7.6.1",
+    "flow-bin": "0.65.0",
+    "flow-typed": "2.3.0",
+    "jest": "22.2.2",
+    "lint-staged": "6.1.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:flow": "flow check",
+    "test:cov": "npm run test -- --coverage ",
+    "lint": "eslint src",
+    "prepublish": "npm run lint && npm run test:cov && npm run test:flow"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -50,7 +70,6 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ],
-    "testRegex": "tests/.*\\.test\\.js$",
-    "testEnvironment": "jsdom"
+    "testRegex": "tests/.*\\.test\\.js$"
   }
 }

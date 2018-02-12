@@ -1,6 +1,6 @@
-import React from "react";
+import React from "react"
 import Validator from 'validatorjs'
-import update from 'immutability-helper';
+import update from 'immutability-helper'
 
 import getValue from './utils/get-value'
 import getFieldRules from './utils/get-field-rules'
@@ -20,36 +20,35 @@ const Form = (WrappedComponent, {
 } = {}) => class extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       inputs: defaultValues,
       errors: {},
       submitting: false,
       submitted: false
-    };
+    }
 
-    this.validate = this.validate.bind(this);
+    this.validate = this.validate.bind(this)
 
-    this.error = this.error.bind(this);
-    this.errors = this.errors.bind(this);
-    this.hasError = this.hasError.bind(this);
+    this.error = this.error.bind(this)
+    this.errors = this.errors.bind(this)
+    this.hasError = this.hasError.bind(this)
 
-    this.value = this.value.bind(this);
-    this.hasValue = this.hasValue.bind(this);
-    this.setValue = this.setValue.bind(this);
-    this.addValue = this.addValue.bind(this);
-    this.removeValue = this.removeValue.bind(this);
+    this.value = this.value.bind(this)
+    this.setValue = this.setValue.bind(this)
+    this.addValue = this.addValue.bind(this)
+    this.removeValue = this.removeValue.bind(this)
 
-    this.values = this.values.bind(this);
-    this.setValues = this.setValues.bind(this);
+    this.values = this.values.bind(this)
+    this.setValues = this.setValues.bind(this)
 
-    this.onChange = this.onChange.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-    this.reset = this.reset.bind(this);
+    this.onChange = this.onChange.bind(this)
+    this.onBlur = this.onBlur.bind(this)
+    this.reset = this.reset.bind(this)
   }
 
   render() {
-    const {...rest} = this.props;
+    const {...rest} = this.props
     return (
       <WrappedComponent
         {...rest}
@@ -61,7 +60,6 @@ const Form = (WrappedComponent, {
         values={this.values}
         setValue={this.setValue}
         setValues={this.setValues}
-        hasValue={this.hasValue}
         validate={this.validate}
         addValue={this.addValue}
         errors={this.errors}
@@ -70,28 +68,28 @@ const Form = (WrappedComponent, {
         submitting={this.state.submitting}
         submitted={this.state.submitted}
       />
-    );
+    )
   }
 
   onChange(el) {
     let value
     switch (el.target.type) {
-      case 'select-multiple':
-        value = [...el.target.selectedOptions].map(option => option.value)
-        break;
-      case 'checkbox':
-        value = el.target.checked
-        break;
-      default:
-        value = el.target.value;
+    case 'select-multiple':
+      value = [...el.target.selectedOptions].map(option => option.value)
+      break
+    case 'checkbox':
+      value = el.target.checked
+      break
+    default:
+      value = el.target.value
     }
     this.setValue(el.target.name, value)
   }
 
   onBlur(el) {
     const fieldRules = getFieldRules(el.target.name, parseCallbackRules(rules, [this.props]))
-    const fieldMessages = getFieldMessages(el.target.name, messages);
-    let validation = new Validator(this.state.inputs, fieldRules, fieldMessages);
+    const fieldMessages = getFieldMessages(el.target.name, messages)
+    let validation = new Validator(this.state.inputs, fieldRules, fieldMessages)
     return new Promise((accept, reject) => {
       validation.fails(() => {
         this.setState({
@@ -101,17 +99,17 @@ const Form = (WrappedComponent, {
           },
           submitting: false,
           submitted: true
-        });
-        reject();
-      });
+        })
+        reject()
+      })
       validation.passes(() => {
         this.setState({
           errors: {},
           submitting: false,
           submitted: true
-        });
+        })
         accept()
-      });
+      })
     })
 
 
@@ -130,23 +128,26 @@ const Form = (WrappedComponent, {
      * @type {*}
      */
     let errorsName = name.split('.')
-    const index = parseInt(errorsName.pop(), 10);
+    const index = parseInt(errorsName.pop(), 10)
     errorsName = errorsName.join('.') + '.'
     const errors = Object.keys(this.state.errors).reduce((acc, item) => {
       if (item.startsWith(errorsName)) {
-        let remainingName = item.substr(errorsName.length, item.length).split('.');
+        let remainingName = item.substr(errorsName.length, item.length).split('.')
+
+        /* istanbul ignore else */
         if (item.startsWith(name)) {
-          return acc;
+          return acc
         }
         let fieldIndex = parseInt(remainingName.shift(), 10)
+        /* istanbul ignore else */
         if (fieldIndex > index) {
-          fieldIndex--;
+          fieldIndex--
         }
         acc[`${errorsName}${fieldIndex}.${remainingName.join('.')}`] = this.state.errors[item]
       } else {
         acc[item] = this.state.errors[item]
       }
-      return acc;
+      return acc
     }, {})
     this.setState({
       inputs: update(this.state.inputs, unflattenRemoveArrayStateUpdate(name)),
@@ -155,40 +156,40 @@ const Form = (WrappedComponent, {
   }
 
   validate() {
-    let validation = new Validator(this.state.inputs, parseCallbackRules(rules, [this.props]), messages);
+    let validation = new Validator(this.state.inputs, parseCallbackRules(rules, [this.props]), messages)
     this.setState({
       submitting: true,
       submitted: false
-    });
+    })
     return new Promise((accept, reject) => {
       validation.fails(() => {
         this.setState({
           errors: validation.errors.errors,
           submitting: false,
           submitted: true
-        });
-        reject();
-      });
+        })
+        reject()
+      })
       validation.passes(() => {
         this.setState({
           errors: {},
           submitting: false,
           submitted: true
-        });
+        })
         accept()
-      });
+      })
     })
   }
 
   error(name, classNameOrPlain = false) {
     if (this.hasError(name)) {
-      const error = this.state.errors[name];
+      const error = this.state.errors[name]
       if (classNameOrPlain === true) {
-        return error
+        return error[0]
       }
-      return <span className={classNameOrPlain !== false ? classNameOrPlain : ""}>{error}</span>;
+      return <span className={classNameOrPlain !== false ? classNameOrPlain : ""}>{error}</span>
     }
-    return null;
+    return null
   }
 
   errors() {
@@ -196,7 +197,7 @@ const Form = (WrappedComponent, {
   }
 
   hasError(name, returnStringOnInvalid = false, returnStringOnValid = false) {
-    const hasError = typeof this.state.errors[name] !== "undefined";
+    const hasError = typeof this.state.errors[name] !== "undefined"
     if (hasError && returnStringOnInvalid !== false) {
       return returnStringOnInvalid
     } else if (hasError === false && returnStringOnValid) {
@@ -210,24 +211,12 @@ const Form = (WrappedComponent, {
   }
 
   values() {
-    return this.state.inputs;
+    return this.state.inputs
   }
 
-  hasValue(name, valueInArray = false) {
-    const value = this.state.inputs[name];
-    let hasValue = typeof value !== "undefined";
-    if (hasValue === true && valueInArray !== false) {
-      if (Array.isArray(value)) {
-        return value.indexOf(valueInArray) !== -1;
-      } else {
-        return value === valueInArray
-      }
-    }
-    return hasValue
-  }
 
   setValues(inputs) {
-    this.setState({inputs});
+    this.setState({inputs})
   }
 
   reset() {
@@ -236,14 +225,14 @@ const Form = (WrappedComponent, {
       errors: {},
       submitted: false,
       submitting: false
-    });
+    })
   }
 
   setValue(name, value) {
     this.setState({
       inputs: update(this.state.inputs, unflatten(`${name}.$set`, value))
-    });
+    })
   }
-};
+}
 
-export default Form;
+export default Form

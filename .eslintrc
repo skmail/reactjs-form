@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "react-app"
+  ],
+  "rules": {
+    "semi": [
+      "error",
+      "never"
+    ],
+    "indent": [
+      "error",
+      2
+    ],
+    "eqeqeq": [
+      "error"
+    ],
+    "curly": [
+      "error"
+    ]
+  }
+}
