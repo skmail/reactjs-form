@@ -1,6 +1,5 @@
 import React from 'react'
-
-import Form from '../../../../../'
+import Form from 'reactjs-form'
 
 class SkillsForm extends React.Component {
 

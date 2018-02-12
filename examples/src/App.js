@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 
 
-import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import {BrowserRouter as Router, Route, Link} from "react-router-dom"
 import Signup from './components/signup'
 import Nested from './components/nested'
 import 'bulma/css/bulma.css'
@@ -35,9 +35,9 @@ class App extends Component {
           </section>
         </div>
       </Router>
-    );
+    )
   }
 
 }
 
-export default App;
+export default App

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
+import Form from 'reactjs-form'
 
 import SkillsForm from './skills-form'
-import Form from '../../../../'
 import ReactJson from 'react-json-view'
 
 import {default as uuidV4} from 'uuid/v4';

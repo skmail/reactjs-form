@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-
-import Form from '../../../../'
+import Form from 'reactjs-form'
 import ReactJson from 'react-json-view'
 
 

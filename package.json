@@ -55,7 +55,8 @@
     "test:flow": "flow check",
     "test:cov": "npm run test -- --coverage ",
     "lint": "eslint src",
-    "prepublish": "npm run lint && npm run test:cov && npm run test:flow"
+    "prepublish": "npm run lint && npm run test:cov && npm run test:flow",
+    "example":"npm --prefix ./examples install && npm --prefix ./examples/ start"
   },
   "jest": {
     "collectCoverageFrom": [
