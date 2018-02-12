@@ -28,13 +28,12 @@
     "validatorjs": "3.14.2"
   },
   "devDependencies": {
+    "@babel/cli": "7.0.0-beta.39",
     "@babel/core": "7.0.0-beta.39",
     "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.39",
     "@babel/preset-env": "7.0.0-beta.39",
     "@babel/preset-flow": "7.0.0-beta.39",
     "@babel/preset-react": "7.0.0-beta.39",
-    "babel-cli": "6.26.0",
-    "babel-core": "^7.0.0-0",
     "babel-eslint": "8.2.1",
     "babel-jest": "22.2.2",
     "enzyme": "3.3.0",
@@ -56,8 +55,10 @@
     "test:cov": "npm run test -- --coverage ",
     "lint": "eslint src",
     "prepublish": "npm run lint && npm run test:cov && npm run test:flow",
-    "example":"npm --prefix ./examples install && npm --prefix ./examples/ start",
-    "gitcommit":"npm run prepublish && git add . && git commit -m"
+    "examples:start": "npm --prefix ./examples/ start",
+    "examples": "npm --prefix ./examples install && npm run example:start",
+    "gitcommit": "npm run prepublish && git add . && git commit -m",
+    "build": "babel src --out-dir lib --ignore tests"
   },
   "jest": {
     "collectCoverageFrom": [
