@@ -51,7 +51,7 @@
     "lint-staged": "6.1.0"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --verbose",
     "test:flow": "flow check",
     "test:cov": "npm run test -- --coverage ",
     "lint": "eslint src",
