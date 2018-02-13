@@ -16,7 +16,9 @@ import {
 const Form = (WrappedComponent, {
   rules = {},
   messages = {},
-  defaultValues = {}
+  defaultValues = {},
+  sync = false,
+  live = false
 } = {}) => class extends React.Component {
 
   constructor(props) {
@@ -45,6 +47,7 @@ const Form = (WrappedComponent, {
     this.onChange = this.onChange.bind(this)
     this.onBlur = this.onBlur.bind(this)
     this.reset = this.reset.bind(this)
+    this.inputComponent = this.inputComponent.bind(this)
   }
 
   render() {
@@ -53,8 +56,6 @@ const Form = (WrappedComponent, {
       <WrappedComponent
         {...rest}
         hasError={this.hasError}
-        onChange={this.onChange}
-        onBlur={this.onBlur}
         error={this.error}
         value={this.value}
         values={this.values}
@@ -67,6 +68,7 @@ const Form = (WrappedComponent, {
         reset={this.reset}
         submitting={this.state.submitting}
         submitted={this.state.submitted}
+        inputComponent={this.inputComponent}
       />
     )
   }
@@ -74,16 +76,16 @@ const Form = (WrappedComponent, {
   onChange(el) {
     let value
     switch (el.target.type) {
-    case 'select-multiple':
-      value = [...el.target.selectedOptions].map(option => option.value)
-      break
-    case 'checkbox':
-      value = el.target.checked
-      break
-    default:
-      value = el.target.value
+      case 'select-multiple':
+        value = [...el.target.selectedOptions].map(option => option.value)
+        break
+      case 'checkbox':
+        value = el.target.checked
+        break
+      default:
+        value = el.target.value
     }
-    this.setValue(el.target.name, value)
+    this.setValue(el.target.name,value)
   }
 
   onBlur(el) {
@@ -111,8 +113,6 @@ const Form = (WrappedComponent, {
         accept()
       })
     })
-
-
   }
 
 
@@ -214,7 +214,6 @@ const Form = (WrappedComponent, {
     return this.state.inputs
   }
 
-
   setValues(inputs) {
     this.setState({inputs})
   }
@@ -232,6 +231,39 @@ const Form = (WrappedComponent, {
     this.setState({
       inputs: update(this.state.inputs, unflatten(`${name}.$set`, value))
     })
+  }
+
+  inputComponent({
+    component:InputComponent,
+    sync:fieldSync = false,
+    ...rest
+  }) {
+    rest.onChange = this.onChange
+    rest.value = this.value(rest.name)
+    if (sync || fieldSync) {
+      rest.onBlur = this.onBlur
+    }
+    return (
+      <InputComponent
+        input={rest}
+        hasError={this.hasError}
+        onBlur={this.onBlur}
+        error={this.error}
+        value={this.value}
+        values={this.values}
+        setValue={this.setValue}
+        setValues={this.setValues}
+        validate={this.validate}
+        addValue={this.addValue}
+        errors={this.errors}
+        removeValue={this.removeValue}
+        reset={this.reset}
+        submitting={this.state.submitting}
+        submitted={this.state.submitted}
+        inputComponent={this.inputComponent}
+        sync={sync || fieldSync}
+      />
+    )
   }
 }
 

@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 
 
 import {BrowserRouter as Router, Route, Link} from "react-router-dom"
-import Signup from './components/signup'
-import Nested from './components/nested'
+
+import Simple from './screens/simple'
+import Deep from './screens/deep'
 import 'bulma/css/bulma.css'
 
 class App extends Component {
@@ -21,14 +22,14 @@ class App extends Component {
                   </p>
                   <ul className="menu-list">
                     <li><Link to="/">Simple Form</Link></li>
-                    <li><Link to="/nested-inputs">Deep Inputs</Link></li>
+                    <li><Link to="/deep-inputs">Deep Inputs</Link></li>
                   </ul>
                 </aside>
               </div>
               <div className="column is-10">
                 <div>
-                  <Route exact path="/" component={Signup}/>
-                  <Route exact path="/nested-inputs" component={Nested}/>
+                  <Route exact path="/" component={Simple}/>
+                  <Route exact path="/deep-inputs" component={Deep}/>
                 </div>
               </div>
             </div>

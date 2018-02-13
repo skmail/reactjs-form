@@ -9,15 +9,25 @@ class SkillsForm extends React.Component {
   }
 
   render() {
+    const {
+      inputComponent:Input,
+    } = this.props
     return (
       <div className="field">
         <label className="label">Skills</label>
         <div className="field is-grouped">
           <p className="control is-expanded">
-            <input
+            <Input
               name="skill"
-              onChange={this.props.onChange}
-              className={`input ${this.props.hasError('skill', 'is-danger')}`} type="text" placeholder="Add as skill"/>
+              type="text"
+              placeholder="Add as skill"
+              component={({hasError,input}) => (
+                <input
+                  className={`input ${hasError('skill', 'is-danger')}`}
+                  {...input}
+                />
+              )}
+            />
           </p>
           <p className="control">
             <button
@@ -49,8 +59,7 @@ export default Form(SkillsForm, {
     skill: ['required',
       {
         not_in: (ownProps) => {
-          console.log(ownProps)
-          return ownProps.skills;
+          return ownProps.skills
         }
       }
     ]

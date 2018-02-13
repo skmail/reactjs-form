@@ -1,28 +1,49 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {shallow, configure} from 'enzyme'
+import {shallow, mount, configure} from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import Form from '../'
 configure({adapter: new Adapter()})
+const findInputProps = (rendered, findBy) => (
+  rendered
+    .find(MyForm)
+    .find(findBy)
+    .first()
+    .children()
+    .props()
+)
+const MyForm = ({inputComponent:Input}) => (
+  <Input
+    name="name"
+    component={({input}) => (
+      <div>
+        <input
+          {...input}
+        />
+      </div>
+    )}
+  />
+)
 
-const getComonent = () => (
-  Form(({onChange}) => (
-    <div>
-      <input
-        name="email"
-        onChange={onChange}
-      />
-    </div>
-  ), {
-    rules: {
-      name: "required",
-      email: "required",
-      "items.*.name": "required"
-    },
-    messages: {
-      "required.email": "email is required.",
-      "required.items.0.name": "Item 0 is required"
-    }
+const hocOptions = {
+  rules: {
+    name: "required",
+    email: "required",
+    "items.*.name": "required"
+  },
+  messages: {
+    "required.email": "email is required.",
+    "required.items.0.name": "Item 0 is required"
+  }
+}
+
+const getComponent = () => (
+  Form(MyForm, hocOptions)
+)
+const getSyncComponent = () => (
+  Form(MyForm, {
+    sync: true,
+    ...hocOptions
   })
 )
 
@@ -40,7 +61,7 @@ it('renders without crashing', () => {
   ReactDOM.unmountComponentAtNode(div)
 })
 
-it('renders without crashing', () => {
+it('renders without crashing - Check output', () => {
   const Component = Form(({onChange}) => (
     <div>
       <input
@@ -55,22 +76,31 @@ it('renders without crashing', () => {
 
 
 it('Changing text input', () => {
-  const Component = getComonent()
-  const rendered = shallow(<Component/>)
-  rendered.props().onChange({
+  const Component = getComponent()
+  const rendered = mount(<Component/>)
+
+  const formProps = rendered.find(MyForm).first().props()
+  const inputProps = findInputProps(rendered, {name: "name"})
+
+
+  inputProps.input.onChange({
     target: {
       type: "text",
       name: "name",
       value: "solaiman"
     }
   })
-  expect(rendered.props().value("name")).toEqual("solaiman")
+  expect(formProps.value("name")).toEqual("solaiman")
 })
 
-it('Changing text input', () => {
-  const Component = getComonent()
-  const rendered = shallow(<Component/>)
-  rendered.props().onChange({
+it('Changing checkbox input', () => {
+  const Component = getComponent()
+  const rendered = mount(<Component/>)
+
+  const formProps = rendered.find(MyForm).first().props()
+  const inputProps = findInputProps(rendered, {name: "name"})
+
+  inputProps.input.onChange({
     target: {
       type: "checkbox",
       name: "name",
@@ -78,13 +108,17 @@ it('Changing text input', () => {
       checked: true
     }
   })
-  expect(rendered.props().value("name")).toBe(true)
+  expect(formProps.value("name")).toBe(true)
 })
 
-it('Changing text input', () => {
-  const Component = getComonent()
-  const rendered = shallow(<Component/>)
-  rendered.props().onChange({
+describe('Changing Select Option', () => {
+  const Component = getComponent()
+  const rendered = mount(<Component/>)
+
+  const formProps = rendered.find(MyForm).first().props()
+  const inputProps = findInputProps(rendered, {name: "name"})
+
+  inputProps.input.onChange({
     target: {
       type: "select-multiple",
       name: "name",
@@ -98,15 +132,25 @@ it('Changing text input', () => {
       ]
     }
   })
-  expect(rendered.props().value("name")).toEqual([1, 2])
+  it('Input component has value function', () => {
+    expect(inputProps.value("name")).toEqual([1, 2])
+  })
+  it('Form component has value function', () => {
+    expect(formProps.value("name")).toEqual([1, 2])
+  })
 })
 
 
 describe('#1 Validation with default messages', () => {
-  const Component = getComonent()
-  const rendered = shallow(<Component/>)
+  const Component = getComponent()
+  const rendered = mount(<Component/>)
   const name = "name"
-  rendered.props().onChange({
+
+  const formProps = rendered.find(MyForm).first().props()
+  const inputProps = findInputProps(rendered, {name: "name"})
+
+
+  inputProps.input.onChange({
     target: {
       name,
       type: "text",
@@ -114,65 +158,75 @@ describe('#1 Validation with default messages', () => {
     }
   })
 
-  rendered.props().validate().then(() => {
+  formProps.validate().then(() => {
 
   }).catch(() => {
 
   })
 
   it('Print Messages JSX element', () => {
-    expect(shallow(rendered.props().error("name")).html()).toEqual('<span class="">The name field is required.</span>')
+    expect(shallow(formProps.error("name")).html()).toEqual('<span class="">The name field is required.</span>')
   })
 
   it('Print Messages JSX element with className', () => {
-    expect(shallow(rendered.props().error("name", "is-invalid")).html()).toEqual('<span class="is-invalid">The name field is required.</span>')
+    expect(shallow(formProps.error("name", "is-invalid")).html()).toEqual('<span class="is-invalid">The name field is required.</span>')
   })
 
   it('Print plain text error', () => {
-    expect(rendered.props().error("name", true)).toEqual('The name field is required.')
+    expect(formProps.error("name", true)).toEqual('The name field is required.')
   })
 })
 
 describe('#2 Validation onBlur with default messages', () => {
-  const Component = getComonent()
-  const rendered = shallow(<Component/>)
+  const Component = getSyncComponent()
+  const rendered = mount(<Component/>)
   const name = "name"
 
-  rendered.props().onBlur({
+  const formProps = rendered.find(MyForm).first().props()
+  const inputProps = findInputProps(rendered, {name: "name"})
+
+
+  inputProps.input.onBlur({
     target: {
       name,
       type: "text",
       value: ""
     }
   }).then(() => {
+
   }).catch(() => {
+
   })
 
   it('Print Messages JSX element', () => {
-    expect(shallow(rendered.props().error("name")).html()).toEqual('<span class="">The name field is required.</span>')
+    expect(shallow(formProps.error("name")).html()).toEqual('<span class="">The name field is required.</span>')
   })
 
   it('Print Messages JSX element with class Name', () => {
-    expect(shallow(rendered.props().error("name", "is-invalid")).html()).toEqual('<span class="is-invalid">The name field is required.</span>')
+    expect(shallow(formProps.error("name", "is-invalid")).html()).toEqual('<span class="is-invalid">The name field is required.</span>')
   })
 
 
   it('Print plain text message', () => {
-    expect(rendered.props().error("name", true)).toEqual('The name field is required.')
+    expect(formProps.error("name", true)).toEqual('The name field is required.')
   })
 
   it('Return null if no errors', () => {
-    expect(rendered.props().error("email", true)).toEqual(null)
+    expect(formProps.error("email", true)).toEqual(null)
   })
 
 })
 
 describe('#3 Validation with custom messages', () => {
-  const Component = getComonent()
-  const rendered = shallow(<Component/>)
+  const Component = getComponent()
+  const rendered = mount(<Component/>)
   const name = "email"
 
-  rendered.props().onChange({
+  const formProps = rendered.find(MyForm).first().props()
+  const inputProps = findInputProps(rendered, {name: "name"})
+
+
+  inputProps.input.onChange({
     target: {
       name,
       type: "text",
@@ -180,54 +234,58 @@ describe('#3 Validation with custom messages', () => {
     }
   })
 
-  rendered.props().validate().then(() => {
+  formProps.validate().then(() => {
 
   }).catch(() => {
 
   })
 
   it('Print Messages JSX element', () => {
-    expect(shallow(rendered.props().error("name")).html()).toEqual('<span class="">The name field is required.</span>')
+    expect(shallow(inputProps.error("name")).html()).toEqual('<span class="">The name field is required.</span>')
   })
 
   it('Print Messages JSX element with className', () => {
-    expect(shallow(rendered.props().error("name", "is-invalid")).html()).toEqual('<span class="is-invalid">The name field is required.</span>')
+    expect(shallow(inputProps.error("name", "is-invalid")).html()).toEqual('<span class="is-invalid">The name field is required.</span>')
   })
 
   it('Print plain text message', () => {
-    expect(rendered.props().error("name", true)).toEqual('The name field is required.')
+    expect(inputProps.error("name", true)).toEqual('The name field is required.')
   })
 
   it('Print Messages JSX element', () => {
-    expect(shallow(rendered.props().error("email")).html()).toEqual('<span class="">email is required.</span>')
+    expect(shallow(inputProps.error("email")).html()).toEqual('<span class="">email is required.</span>')
   })
 
   it('Print Messages JSX element with className', () => {
-    expect(shallow(rendered.props().error("email", "is-invalid")).html()).toEqual('<span class="is-invalid">email is required.</span>')
+    expect(shallow(inputProps.error("email", "is-invalid")).html()).toEqual('<span class="is-invalid">email is required.</span>')
   })
 
   it('Print plain text message', () => {
-    expect(rendered.props().error("email", true)).toEqual('email is required.')
+    expect(inputProps.error("email", true)).toEqual('email is required.')
   })
 
 })
 
 describe('Validation Array with custom messages', () => {
-  const Component = getComonent()
-  const rendered = shallow(<Component/>)
 
-  rendered.props().addValue("items",{
-    name:""
+  const Component = getComponent()
+
+  const rendered = mount(<Component/>)
+
+  const formProps = rendered.find(MyForm).first().props()
+
+  formProps.addValue("items", {
+    name: ""
   })
 
-  rendered.props().validate().then(() => {
+  formProps.validate().then(() => {
 
   }).catch(() => {
 
   })
 
   it('Print Messages JSX element', () => {
-    expect(shallow(rendered.props().error("items.0.name")).html()).toEqual('<span class="">Item 0 is required</span>')
+    expect(shallow(formProps.error("items.0.name")).html()).toEqual('<span class="">Item 0 is required</span>')
   })
   //
   // it('Print Messages JSX element with className', () => {
@@ -253,10 +311,15 @@ describe('Validation Array with custom messages', () => {
 })
 
 
-it('Validation Passed', () => {
-  const Component = getComonent()
-  const rendered = shallow(<Component/>)
-  rendered.props().onChange({
+describe('Validation Passed', () => {
+  const Component = getComponent()
+  const rendered = mount(<Component/>)
+
+  const formProps = rendered.find(MyForm).first().props()
+  const inputProps = findInputProps(rendered, {name: "name"})
+
+
+  inputProps.input.onChange({
     target: {
       name: "name",
       type: "text",
@@ -264,7 +327,7 @@ it('Validation Passed', () => {
     }
   })
 
-  rendered.props().onChange({
+  inputProps.input.onChange({
     target: {
       name: "email",
       type: "text",
@@ -272,39 +335,48 @@ it('Validation Passed', () => {
     }
   })
 
-  rendered.props().validate().then(() => {
+  formProps.validate().then(() => {
 
   }).catch(() => {
 
   })
 
-  expect(Object.keys(rendered.props().errors()).length).toEqual(0)
+  it('Passes errors object to Input component', () => {
+    expect(Object.keys(formProps.errors()).length).toEqual(0)
+  })
+  it('Passes errors object to Form component', () => {
+    expect(Object.keys(inputProps.errors()).length).toEqual(0)
+  })
 
 })
 
 it('Validation onBlur Passes', () => {
-  const Component = getComonent()
-  const rendered = shallow(<Component/>)
+  const Component = getComponent()
+  const rendered = mount(<Component/>)
   const name = "name"
-  rendered.props().onChange({
+  const formProps = rendered.find(MyForm).first().props()
+  const inputProps = findInputProps(rendered, {name: "name"})
+
+
+  inputProps.input.onChange({
     target: {
       name,
       type: "text",
       value: "Solaiman"
     }
   })
-  rendered.props().onBlur({
+  inputProps.onBlur({
     target: {
       name,
       type: "text"
     }
   })
-  expect(rendered.props().error(name, true)).toEqual(null)
+  expect(inputProps.error(name, true)).toEqual(null)
 })
 
 
 it('Add an item to array', () => {
-  const Component = getComonent()
+  const Component = getComponent()
   const rendered = shallow(<Component/>)
 
   expect(rendered.props().value('items', []).length).toEqual(0)
@@ -323,7 +395,7 @@ it('Add an item to array', () => {
 
 describe('Remove item from array', () => {
 
-  const Component = getComonent()
+  const Component = getComponent()
 
   const rendered = shallow(<Component/>)
 
@@ -358,7 +430,7 @@ describe('Remove item from array', () => {
 
 it('Rearrange messages after Remove item from array', () => {
 
-  const Component = getComonent()
+  const Component = getComponent()
 
   const rendered = shallow(<Component/>)
 
@@ -383,7 +455,7 @@ it('Rearrange messages after Remove item from array', () => {
 })
 it('Rearrange messages after Remove item from array', () => {
 
-  const Component = getComonent()
+  const Component = getComponent()
 
   const rendered = shallow(<Component/>)
 
@@ -409,7 +481,7 @@ it('Rearrange messages after Remove item from array', () => {
 
 it('Get values', () => {
 
-  const Component = getComonent()
+  const Component = getComponent()
 
   const rendered = shallow(<Component/>)
 
@@ -435,11 +507,13 @@ it('Get values', () => {
 })
 describe('hasErrors', () => {
 
-  const Component = getComonent()
+  const Component = getComponent()
 
-  const rendered = shallow(<Component/>)
+  const rendered = mount(<Component/>)
+  const formProps = rendered.find(MyForm).first().props()
+  const inputProps = findInputProps(rendered, {name: "name"})
 
-  rendered.props().onChange({
+  inputProps.input.onChange({
     target: {
       name: "name",
       type: "text",
@@ -447,7 +521,7 @@ describe('hasErrors', () => {
     }
   })
 
-  rendered.props().onChange({
+  inputProps.input.onChange({
     target: {
       name: "email",
       type: "text",
@@ -455,51 +529,54 @@ describe('hasErrors', () => {
     }
   })
 
-  rendered.props().addValue('items', {
+  inputProps.addValue('items', {
     name: "solaiman"
   })
 
-  rendered.props().addValue('items', {
+  inputProps.addValue('items', {
     name: ""
   })
 
-  rendered.props().validate().then(() => {
+  formProps.validate().then(() => {
 
   }).catch(() => {
 
   })
 
   it('Direct field is invalid', () => {
-    expect(rendered.props().hasError('name')).toBe(true)
+    expect(formProps.hasError('name')).toBe(true)
   })
 
   it('direct field is valid', () => {
-    expect(rendered.props().hasError('email')).toBe(false)
+    expect(formProps.hasError('email')).toBe(false)
   })
 
   it('Deep Field is invalid', () => {
-    expect(rendered.props().hasError('items.1.name')).toBe(true)
+    expect(formProps.hasError('items.1.name')).toBe(true)
   })
 
   it('Deep Field is valid', () => {
-    expect(rendered.props().hasError('items.0.name')).toBe(false)
+    expect(formProps.hasError('items.0.name')).toBe(false)
   })
 
   it('Return a string on invalid  ', () => {
-    expect(rendered.props().hasError('items.1.name', 'is-invalid')).toBe('is-invalid')
+    expect(formProps.hasError('items.1.name', 'is-invalid')).toBe('is-invalid')
   })
 
   it('Return a string on valid  ', () => {
-    expect(rendered.props().hasError('items.0.name', 'is-invalid', 'is-valid')).toBe('is-valid')
+    expect(formProps.hasError('items.0.name', 'is-invalid', 'is-valid')).toBe('is-valid')
   })
 
 })
 
 describe('setValues', () => {
-  const Component = getComonent()
-  const rendered = shallow(<Component/>)
+  const Component = getComponent()
+  const rendered = mount(<Component/>)
 
-  rendered.props().onChange({
+  const formProps = rendered.find(MyForm).first().props()
+  const inputProps = findInputProps(rendered, {name: "name"}).input
+
+  inputProps.onChange({
     target: {
       name: "name",
       type: "text",
@@ -514,44 +591,45 @@ describe('setValues', () => {
     tags: ["javascript", "react"]
   }
 
-  rendered.props().setValues(values)
+  formProps.setValues(values)
 
   it('Return all values', () => {
-    expect(rendered.props().values()).toEqual(values)
+    expect(formProps.values()).toEqual(values)
   })
 
   it('Return single value', () => {
-    expect(rendered.props().value('name')).toEqual(values.name)
+    expect(formProps.value('name')).toEqual(values.name)
   })
 
   it('Return array', () => {
-    expect(rendered.props().value('items')).toEqual(values.items)
+    expect(formProps.value('items')).toEqual(values.items)
   })
 
   it('Return default value', () => {
-    expect(rendered.props().value('age', 28)).toEqual(28)
+    expect(formProps.value('age', 28)).toEqual(28)
   })
 
 })
 
 describe('Reset', () => {
 
-  const Component = getComonent()
-  const rendered = shallow(<Component/>)
+  const Component = getComponent()
+  const rendered = mount(<Component/>)
 
-  rendered.props().onChange({
+  const formProps = rendered.find(MyForm).first().props()
+  const inputProps = findInputProps(rendered, {name: "name"}).input
+  inputProps.onChange({
     target: {
       name: "name",
       type: "text",
-      value: ""
+      value: "123"
     }
-  })
+  });
 
-  rendered.props().reset()
+  formProps.reset()
 
   it('Return all values', () => {
-    expect(rendered.props().values()).toEqual({})
-    expect(rendered.props().submitted).toBe(false)
-    expect(rendered.props().submitted).toBe(false)
+    expect(formProps.submitted).toBe(false)
+    expect(formProps.submitting).toBe(false)
   })
 })
