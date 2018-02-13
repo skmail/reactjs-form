@@ -16,26 +16,27 @@ Well! Forms and it's validation process is the most boring task in  developers l
 ## Simple Example
 
 ```js
-class Signup extends Component {
+class SingleInput extends Component {
   constructor(props) {
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
   }
   render() {
+    const {
+      inputComponent:Input,
+      submitting
+    } = this.props
     return (
       <form onSubmit={this.onSubmit}>
-        <TextInput
+        <Input
           name="email"
           type="email"
-          value={this.props.value}
-          error={this.props.error}
-          hasError={this.props.hasError}
-          onChange={this.props.onChange}
           label="Email Address"
+          component={TextInput}
         />
         <button
           className="button is-primary"
-          disabled={this.props.submitting}>Submit
+          disabled={submitting}>Submit
         </button>
       </form>
     )
@@ -48,7 +49,8 @@ class Signup extends Component {
   }
 }
 
-export default Form(Signup, {
+export default Form(SingleInput, {
+  sync: true,
   rules: {
     email: "required|email"
   }
