@@ -354,7 +354,6 @@ it('Validation onBlur Passes', () => {
   const Component = getComponent()
   const rendered = mount(<Component/>)
   const name = "name"
-  const formProps = rendered.find(MyForm).first().props()
   const inputProps = findInputProps(rendered, {name: "name"})
 
 
@@ -624,7 +623,7 @@ describe('Reset', () => {
       type: "text",
       value: "123"
     }
-  });
+  })
 
   formProps.reset()
 

@@ -76,14 +76,14 @@ const Form = (WrappedComponent, {
   onChange(el) {
     let value
     switch (el.target.type) {
-      case 'select-multiple':
-        value = [...el.target.selectedOptions].map(option => option.value)
-        break
-      case 'checkbox':
-        value = el.target.checked
-        break
-      default:
-        value = el.target.value
+    case 'select-multiple':
+      value = [...el.target.selectedOptions].map(option => option.value)
+      break
+    case 'checkbox':
+      value = el.target.checked
+      break
+    default:
+      value = el.target.value
     }
     this.setValue(el.target.name,value)
   }
