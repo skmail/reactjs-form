@@ -44,7 +44,6 @@ class Signup extends Component {
       </form>
     )
   }
-
   onSubmit(e) {
     e.preventDefault()
     this.props.validate().then(() => {
