@@ -58,12 +58,9 @@ export default Form(SingleInput, {
 
 ---
 
-
-
----
+Pass `sync={true}`  to Input component to allow field level synchronous validation
 
 ```js
-
 class SimpleInput extends Component {
   constructor(props) {
     super(props)
