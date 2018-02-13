@@ -2,9 +2,9 @@
 
 ---
 
-Synchronous Validation can be done by 4 Ways
+Synchronous Validation can be done on 2 Levels [Form Level](#form-level) and [Field Level](#field-level)
 
-## onBlur - Form Level
+## [Form Level](#form-level)
 
 ---
 
@@ -52,10 +52,9 @@ export default Form(SingleInput, {
     email: "required|email"
   }
 })
-
 ```
 
-## OnBlur - Field Level
+## Field Level
 
 ---
 
@@ -107,8 +106,6 @@ export default Form(SimpleInput, {
     email: "required|email",
   }
 })
-
-
 ```
 
 
