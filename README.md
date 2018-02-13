@@ -49,8 +49,7 @@ class SingleInput extends Component {
   }
 }
 
-export default Form(SingleInput, {
-  sync: true,
+export default Form(SingleInput, { 
   rules: {
     email: "required|email"
   }
