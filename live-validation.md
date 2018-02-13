@@ -2,7 +2,5 @@
 
 ---
 
-Live validation is validating input while changing inputs value
-
-
+Live validation is validating input while changing inputs value 
 
