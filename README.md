@@ -18,21 +18,7 @@ Well! Forms and it's validation process is the most boring task in  developers l
 ```js
 import React, {Component} from 'react'
 import Form from 'reactjs-form'
-
-const TextInput = ({label, hasError, onChange, error, value, ...rest}) => (
-  <div className="field">
-    <label className="label">{label}</label>
-    <div className="control">
-      <input
-        value={value(rest.name)}
-        className={`input ${hasError(rest.name, "is-danger", "")}`}
-        onChange={onChange}
-        {...rest}
-      />
-    </div>
-    {error(rest.name, "help is-danger")}
-  </div>
-);
+import TextInput from '../../components/text-input'
 
 class Signup extends Component {
   constructor(props) {
@@ -72,6 +58,7 @@ export default Form(Signup, {
     email: "required|email"
   }
 })
+
 ```
 
 ## Installation
