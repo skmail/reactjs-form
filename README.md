@@ -57,7 +57,7 @@ export default Form(SingleInput, {
 
 `npm install --save reactjs-form`
 
-OR Using Yarn
+OR using Yarn
 
 `yarn add reactjs-form`
 
