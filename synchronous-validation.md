@@ -4,7 +4,7 @@
 
 Synchronous Validation can be done on 2 Levels [Form Level](#form-level) and [Field Level](#field-level)
 
-## [Form Level](#form-level)
+## Form Level
 
 ---
 
@@ -58,7 +58,12 @@ export default Form(SingleInput, {
 
 ---
 
+
+
+---
+
 ```js
+
 class SimpleInput extends Component {
   constructor(props) {
     super(props)
