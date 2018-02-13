@@ -4,11 +4,13 @@
 
 Synchronous Validation can be done by 4 Ways
 
-
-
-## OnBlur - Form Level
+## onBlur - Form Level
 
 ---
+
+`sync:true`  in the HOC component options will allow the form onBlur validation
+
+ 
 
 ```
 import React, {Component} from 'react'
@@ -55,10 +57,9 @@ export default Form(Signup, {
     email: "required|email"
   }
 })
-
 ```
 
-## OnBlur - Field Level 
+## OnBlur - Field Level
 
 ---
 
