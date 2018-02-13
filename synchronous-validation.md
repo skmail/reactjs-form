@@ -16,7 +16,6 @@ class SingleInput extends Component {
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
   }
-
   render() {
     const {
       inputComponent:Input,
@@ -37,7 +36,6 @@ class SingleInput extends Component {
       </form>
     )
   }
-
   onSubmit(e) {
     e.preventDefault()
     this.props.validate().then(() => {
@@ -93,7 +91,6 @@ class SimpleInput extends Component {
       </form>
     )
   }
-
   onSubmit(e) {
     e.preventDefault()
     this.props.validate().then(() => {
