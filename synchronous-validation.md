@@ -10,32 +10,34 @@ Synchronous Validation can be done by 4 Ways
 
 `sync:true`  in the HOC component options will allow the form onBlur validation
 
-```
-class Signup extends Component {
+```js
+class SingleInput extends Component {
   constructor(props) {
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
   }
 
   render() {
+    const {
+      inputComponent:Input,
+      submitting
+    } = this.props
     return (
       <form onSubmit={this.onSubmit}>
-        <TextInput
+        <Input
           name="email"
           type="email"
-          value={this.props.value}
-          error={this.props.error}
-          hasError={this.props.hasError}
-          onChange={this.props.onChange} 
           label="Email Address"
+          component={TextInput}
         />
         <button
           className="button is-primary"
-          disabled={this.props.submitting}>Submit
+          disabled={submitting}>Submit
         </button>
       </form>
     )
   }
+
   onSubmit(e) {
     e.preventDefault()
     this.props.validate().then(() => {
@@ -44,12 +46,13 @@ class Signup extends Component {
   }
 }
 
-export default Form(Signup, {
+export default Form(SingleInput, {
   sync: true,
   rules: {
     email: "required|email"
   }
 })
+
 ```
 
 ## OnBlur - Field Level
@@ -57,28 +60,34 @@ export default Form(Signup, {
 ---
 
 ```js
-class Signup extends Component {
+class SimpleInput extends Component {
   constructor(props) {
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
   }
-
   render() {
+    const {
+      inputComponent:Input,
+      submitting
+    } = this.props
     return (
       <form onSubmit={this.onSubmit}>
-        <TextInput
+        <Input
+          sync={true}
           name="email"
           type="email"
-          value={this.props.value}
-          error={this.props.error}
-          hasError={this.props.hasError}
-          onChange={this.props.onChange}
-          onBlur={this.props.onBlur}
           label="Email Address"
+          component={TextInput}
+        />
+        <Input
+          name="first_name"
+          type="text"
+          label="First Name"
+          component={TextInput}
         />
         <button
           className="button is-primary"
-          disabled={this.props.submitting}>Submit
+          disabled={submitting}>Submit
         </button>
       </form>
     )
@@ -92,11 +101,14 @@ class Signup extends Component {
   }
 }
 
-export default Form(Signup, {
+export default Form(SimpleInput, {
   rules: {
-    email: "required|email"
+    name: "required",
+    email: "required|email",
   }
 })
+
+
 ```
 
 
