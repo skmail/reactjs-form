@@ -10,13 +10,7 @@ Synchronous Validation can be done by 4 Ways
 
 `sync:true`  in the HOC component options will allow the form onBlur validation
 
- 
-
 ```
-import React, {Component} from 'react'
-import Form from 'reactjs-form'
-import TextInput from '../../components/text-input'
-
 class Signup extends Component {
   constructor(props) {
     super(props)
@@ -42,7 +36,6 @@ class Signup extends Component {
       </form>
     )
   }
-
   onSubmit(e) {
     e.preventDefault()
     this.props.validate().then(() => {
