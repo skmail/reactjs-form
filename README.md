@@ -16,10 +16,6 @@ Well! Forms and it's validation process is the most boring task in  developers l
 ## Simple Example
 
 ```js
-import React, {Component} from 'react'
-import Form from 'reactjs-form'
-import TextInput from '../../components/text-input'
-
 class Signup extends Component {
   constructor(props) {
     super(props)
@@ -57,7 +53,6 @@ export default Form(Signup, {
     email: "required|email"
   }
 })
-
 ```
 
 ## Installation
