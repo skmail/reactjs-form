@@ -351,11 +351,10 @@ describe('Validation Passed', () => {
 })
 
 it('Validation onBlur Passes', () => {
-  const Component = getComponent()
+  const Component = getSyncComponent()
   const rendered = mount(<Component/>)
   const name = "name"
   const inputProps = findInputProps(rendered, {name: "name"})
-
 
   inputProps.input.onChange({
     target: {
@@ -364,7 +363,7 @@ it('Validation onBlur Passes', () => {
       value: "Solaiman"
     }
   })
-  inputProps.onBlur({
+  inputProps.input.onBlur({
     target: {
       name,
       type: "text"

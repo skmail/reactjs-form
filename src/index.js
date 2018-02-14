@@ -195,12 +195,12 @@ const Form = (WrappedComponent, {
     return this.state.errors
   }
 
-  hasError(name, returnStringOnInvalid = false, returnStringOnValid = false) {
+  hasError(name, stringToReturnOnInvalid = false, stringToReturnOnValid = false) {
     const hasError = typeof this.state.errors[name] !== "undefined"
-    if (hasError && returnStringOnInvalid !== false) {
-      return returnStringOnInvalid
-    } else if (hasError === false && returnStringOnValid) {
-      return returnStringOnValid
+    if (hasError && stringToReturnOnInvalid !== false) {
+      return stringToReturnOnInvalid
+    } else if (hasError === false && stringToReturnOnValid) {
+      return stringToReturnOnValid
     }
     return hasError
   }
@@ -246,21 +246,19 @@ const Form = (WrappedComponent, {
       <InputComponent
         input={rest}
         hasError={this.hasError}
-        onBlur={this.onBlur}
         error={this.error}
+        errors={this.errors}
         value={this.value}
         values={this.values}
         setValue={this.setValue}
         setValues={this.setValues}
         validate={this.validate}
         addValue={this.addValue}
-        errors={this.errors}
         removeValue={this.removeValue}
         reset={this.reset}
         submitting={this.state.submitting}
         submitted={this.state.submitted}
         inputComponent={this.inputComponent}
-        sync={sync || fieldSync}
       />
     )
   }

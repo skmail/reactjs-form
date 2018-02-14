@@ -57,13 +57,19 @@
     "test:cov": "npm run test -- --coverage ",
     "test:flow": "flow check",
     "lint": "eslint src",
+
     "prepublish": "npm run lint && npm run test:cov && npm run test:flow",
+
+    "gitcommit": "git add . && git commit -m",
+
+    "build:lib": "babel src --out-dir lib --ignore src/tests",
+    "deploy": "npm version patch && npm publish && git push origin master",
+
+    "docs:watch": "gitbook install && gitbook serve",
+    "docs:build": "gitbook install && gitbook build",
+
     "examples:start": "npm --prefix ./examples/ start",
-    "examples": "npm --prefix ./examples install && npm run example:start",
-    "gitcommit": "git add . && npm version patch && npm run prepublish  && git commit -m",
-    "build": "babel src --out-dir lib --ignore src/tests",
-    "deploy": "npm version patch && npm publish && npm run ",
-    "build:docs":"gitbook build"
+    "examples": "npm --prefix ./examples install && npm run example:start"
   },
   "jest": {
     "collectCoverageFrom": [
