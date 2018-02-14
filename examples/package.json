@@ -9,7 +9,8 @@
     "react-json-view": "1.16.0",
     "react-router": "4.2.0",
     "react-router-dom": "4.2.2",
-    "reactjs-form":"0.1.5"
+    "reactjs-form": "0.1.5",
+    "uuid": "3.2.1"
   },
   "devDependencies": {
     "flow-bin": "0.65.0",
