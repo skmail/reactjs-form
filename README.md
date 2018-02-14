@@ -72,3 +72,8 @@ Or
 If you started examples before then you can run
 
 `npm run examples:start`
+
+
+## Docs
+
+Check out the [Documentation](https://reactjs-form.codeiin.com)
