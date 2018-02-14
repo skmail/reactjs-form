@@ -8,7 +8,8 @@
     "react-dom": "^16.2.0",
     "react-json-view": "1.16.0",
     "react-router": "4.2.0",
-    "react-router-dom": "4.2.2"
+    "react-router-dom": "4.2.2",
+    "reactjs-form":"0.1.5"
   },
   "devDependencies": {
     "flow-bin": "0.65.0",
