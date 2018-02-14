@@ -50,7 +50,7 @@ class SkillsForm extends React.Component {
   onSubmit() {
     this.props.validate().then(() => {
       this.props.addSkill(this.props.value("skill"))
-    })
+    }).catch(err => {})
   }
 }
 

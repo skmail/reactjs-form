@@ -80,7 +80,7 @@ class Simple extends Component {
     e.preventDefault()
     this.props.validate().then(() => {
       // continue
-    })
+    }).catch(err => {})
   }
 }
 
