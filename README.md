@@ -12,7 +12,11 @@ Well! Forms and it's validation process is the most boring task in  developers l
 
 ## Simple Example
 
-```js
+```jsx
+import React, {Component} from 'react'
+import Form from 'reactjs-form'
+import TextInput from '../../components/text-input'
+
 class SingleInput extends Component {
   constructor(props) {
     super(props)
@@ -30,11 +34,7 @@ class SingleInput extends Component {
           type="email"
           label="Email Address"
           component={TextInput}
-        />
-        <button
-          className="button is-primary"
-          disabled={submitting}>Submit
-        </button>
+        /> 
       </form>
     )
   }
