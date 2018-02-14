@@ -63,7 +63,7 @@
     "gitcommit": "git add . && npm version patch && npm run prepublish  && git commit -m",
     "build": "babel src --out-dir lib --ignore src/tests",
     "deploy": "npm version patch && npm publish && npm run ",
-    "build:docs":"cp ./README.md ./docs/README.md"
+    "build:docs":"gitbook build"
   },
   "jest": {
     "collectCoverageFrom": [
