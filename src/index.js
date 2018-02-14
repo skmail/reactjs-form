@@ -17,8 +17,7 @@ const Form = (WrappedComponent, {
   rules = {},
   messages = {},
   defaultValues = {},
-  sync = false,
-  live = false
+  sync = false
 } = {}) => class extends React.Component {
 
   constructor(props) {
