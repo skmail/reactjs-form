@@ -4,8 +4,8 @@
 
  the Form Decorator passes `inputComponent`
  prop to your form component in order to use
- the minimal code to render your inputs, 
- [Input Props](#props)
+ the minimal code to render your inputs, checkout what props this component provides in
+ [Props](#props) Section
  
  ### Example
  ---
@@ -47,7 +47,7 @@ export default ({hasError, error, input:{label, ...input}}) => (
 **input**  
 
  it contains the html input props like onChange, onBlur, value and name,
-  moreover it contains the props passed to the Input component, Invalid DOM props must be destructed
+  also it contains the props passed to the Input component,any Invalid DOM props must be destructed
 
 ```js
 ({input:{InvalidDomProps, ...input}}) => <input {...input} />

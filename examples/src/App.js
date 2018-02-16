@@ -5,8 +5,8 @@ import {BrowserRouter as Router, Route, Link} from "react-router-dom"
 
 import Simple from './screens/simple'
 import ArrayInputs from './screens/array-inputs'
-import SyncForm from './screens/sync-form'
-import SyncInput from './screens/sync-input'
+import SynchronousValidation from './screens/synchronous-validation'
+import AsynchronousValidation from './screens/asynchronous-validation'
 import 'bulma/css/bulma.css'
 
 class App extends Component {
@@ -25,8 +25,8 @@ class App extends Component {
                   <ul className="menu-list">
                     <li><Link to="/">Simple Form</Link></li>
                     <li><Link to="/array-inputs">Array Inputs</Link></li>
-                    <li><Link to="/sync-form">Synchronous Form Validation</Link></li>
-                    <li><Link to="/sync-input">Synchronous Input Validation</Link></li>
+                    <li><Link to="/synchronous-validation">Synchronous Validation</Link></li>
+                    <li><Link to="/asynchronous-validation">Asynchronous Validation</Link></li>
                   </ul>
                 </aside>
               </div>
@@ -34,8 +34,8 @@ class App extends Component {
                 <div>
                   <Route exact path="/" component={Simple}/>
                   <Route exact path="/array-inputs" component={ArrayInputs}/>
-                  <Route exact path="/sync-form" component={SyncForm}/>
-                  <Route exact path="/sync-input" component={SyncInput}/>
+                  <Route exact path="/synchronous-validation" component={SynchronousValidation}/>
+                  <Route exact path="/asynchronous-validation" component={AsynchronousValidation}/>
                 </div>
               </div>
             </div>

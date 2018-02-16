@@ -7,13 +7,24 @@ import getFieldRules from './utils/get-field-rules'
 import getFieldMessages from './utils/get-field-messages'
 import parseCallbackRules from './utils/parse-callback-rules'
 import rearrangeMessageRemoval from './utils/rearrange-message-removal'
-
 import {
   unflatten,
   unflattenArrayStateUpdate,
   unflattenRemoveArrayStateUpdate
 } from './utils/unflatten-object'
 
+
+Validator.registerAsync('username_available', function(username, attribute, req, passes) {
+  // do your database/api checks here etc
+  // then call the `passes` method where appropriate:
+  // passes(); // if username is available
+  setTimeout(() =>{
+    passes(false, 'Username has already been taken.'); // if username is not available
+  },1500)
+});
+
+
+console.log("Whooooo")
 const Form = (WrappedComponent, {
   rules = {},
   messages = {},
@@ -27,7 +38,8 @@ const Form = (WrappedComponent, {
       inputs: defaultValues,
       errors: {},
       submitting: false,
-      submitted: false
+      submitted: false,
+      validating:false
     }
 
     this.validate = this.validate.bind(this)
@@ -76,14 +88,14 @@ const Form = (WrappedComponent, {
   onChange(el) {
     let value
     switch (el.target.type) {
-      case 'select-multiple':
-        value = [...el.target.selectedOptions].map(option => option.value)
-        break
-      case 'checkbox':
-        value = el.target.checked
-        break
-      default:
-        value = el.target.value
+    case 'select-multiple':
+      value = [...el.target.selectedOptions].map(option => option.value)
+      break
+    case 'checkbox':
+      value = el.target.checked
+      break
+    default:
+      value = el.target.value
     }
     this.setValue(el.target.name, value)
   }
@@ -114,7 +126,6 @@ const Form = (WrappedComponent, {
       })
     })
   }
-
 
   addValue(name, value) {
     this.setState({

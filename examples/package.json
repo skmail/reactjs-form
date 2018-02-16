@@ -9,7 +9,6 @@
     "react-json-view": "1.16.0",
     "react-router": "4.2.0",
     "react-router-dom": "4.2.2",
-    "reactjs-form": "0.1.6",
     "uuid": "3.2.1"
   },
   "devDependencies": {

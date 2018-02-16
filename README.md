@@ -4,15 +4,14 @@
 
 [![NPM Version](https://img.shields.io/npm/v/reactjs-form.svg?style=flat)](https://www.npmjs.com/package/reactjs-form)   [![NPM Downloads](https://img.shields.io/npm/dm/reactjs-form.svg?style=flat)](https://www.npmjs.com/package/reactjs-form)   [![Build Status](https://img.shields.io/travis/skmail/reactjs-form/master.svg?style=flat)](https://travis-ci.org/skmail/reactjs-form)   [![codecov.io](https://codecov.io/gh/skmail/reactjs-form/branch/master/graph/badge.svg)](https://codecov.io/gh/skmail/reactjs-form)
 
-`reactjs-form` is a react library that allows html form validation within component state with the minimal code
+`reactjs-form` is a react library that allows html form validation within component state using minimal code and declarative way, 
+our validator uses [skaterdav85/validatorjs](https://github.com/skaterdav85/validatorjs) package that  inspired by [Laravel PHP Validator](https://laravel.com/docs/master/validation) 
+  
+  
 
-## Why ReactJS-Form
+## Example
 
-Well! Forms and it's validation process is the most boring task in  developers life, it's like ...  create a text input, make it required max length X  then create email input make it required, email validation ... text input make  it required .. or required if first input is empty ... then another required text input and required text input numeric then  text input text input .. .Arghhh!! .. text input text input. etc, With ReactJS-form , forms are easily validated.
-
-## Simple Example
-
-```jsx
+```js
 import React, {Component} from 'react'
 import Form from 'reactjs-form'
 import TextInput from '../../components/text-input'
@@ -42,7 +41,7 @@ class SingleInput extends Component {
     e.preventDefault()
     this.props.validate().then(() => {
       // continue
-    })
+    }).catch(() => {})
   }
 }
 
@@ -55,25 +54,16 @@ export default Form(SingleInput, {
 
 ## Installation
 
-`npm install --save reactjs-form`
-
-OR using Yarn
-
-`yarn add reactjs-form`
-
-## Demo
-
-`npm run examples`
-
-Or
-
-`yarn examples`
-
-If you started examples before then you can run
-
-`npm run examples:start`
-
+`npm install --save reactjs-form` or  `yarn add reactjs-form`
 
 ## Docs
 
 Check out the [Documentation](https://reactjs-form.codeiin.com)
+
+
+
+## Demo
+
+`npm run examples` or `yarn examples`
+
+

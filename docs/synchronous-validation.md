@@ -2,9 +2,11 @@
 
 ---
 
-Synchronous Validation can be done on 2 Levels [Form Level](#form-level) and [Field Level](#field-level)
-
-## Form Level
+Synchronous Validation can be done on two Levels 
+- [Form Level](#form-level) 
+- [Field Level](#field-level)
+ 
+## Form Level 
 
 ---
 

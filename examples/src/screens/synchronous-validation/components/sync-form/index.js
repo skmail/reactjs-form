@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Form from 'reactjs-form'
-import TextInput from '../../components/text-input'
+import TextInput from '../../../../components/text-input'
 
 class SyncForm extends Component {
 
