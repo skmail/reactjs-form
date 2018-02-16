@@ -14,17 +14,6 @@ import {
 } from './utils/unflatten-object'
 
 
-Validator.registerAsync('username_available', function(username, attribute, req, passes) {
-  // do your database/api checks here etc
-  // then call the `passes` method where appropriate:
-  // passes(); // if username is available
-  setTimeout(() =>{
-    passes(false, 'Username has already been taken.'); // if username is not available
-  },1500)
-});
-
-
-console.log("Whooooo")
 const Form = (WrappedComponent, {
   rules = {},
   messages = {},
