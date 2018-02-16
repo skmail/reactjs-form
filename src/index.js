@@ -6,6 +6,7 @@ import getValue from './utils/get-value'
 import getFieldRules from './utils/get-field-rules'
 import getFieldMessages from './utils/get-field-messages'
 import parseCallbackRules from './utils/parse-callback-rules'
+import rearrangeMessageRemoval from './utils/rearrange-message-removal'
 
 import {
   unflatten,
@@ -75,16 +76,16 @@ const Form = (WrappedComponent, {
   onChange(el) {
     let value
     switch (el.target.type) {
-    case 'select-multiple':
-      value = [...el.target.selectedOptions].map(option => option.value)
-      break
-    case 'checkbox':
-      value = el.target.checked
-      break
-    default:
-      value = el.target.value
+      case 'select-multiple':
+        value = [...el.target.selectedOptions].map(option => option.value)
+        break
+      case 'checkbox':
+        value = el.target.checked
+        break
+      default:
+        value = el.target.value
     }
-    this.setValue(el.target.name,value)
+    this.setValue(el.target.name, value)
   }
 
   onBlur(el) {
@@ -126,31 +127,9 @@ const Form = (WrappedComponent, {
      * While removing value from an array we need to remove the related errors to that index too
      * @type {*}
      */
-    let errorsName = name.split('.')
-    const index = parseInt(errorsName.pop(), 10)
-    errorsName = errorsName.join('.') + '.'
-    const errors = Object.keys(this.state.errors).reduce((acc, item) => {
-      if (item.startsWith(errorsName)) {
-        let remainingName = item.substr(errorsName.length, item.length).split('.')
-
-        /* istanbul ignore else */
-        if (item.startsWith(name)) {
-          return acc
-        }
-        let fieldIndex = parseInt(remainingName.shift(), 10)
-        /* istanbul ignore else */
-        if (fieldIndex > index) {
-          fieldIndex--
-        }
-        acc[`${errorsName}${fieldIndex}.${remainingName.join('.')}`] = this.state.errors[item]
-      } else {
-        acc[item] = this.state.errors[item]
-      }
-      return acc
-    }, {})
     this.setState({
       inputs: update(this.state.inputs, unflattenRemoveArrayStateUpdate(name)),
-      errors
+      errors: rearrangeMessageRemoval(name, this.state.errors)
     })
   }
 

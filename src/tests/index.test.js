@@ -451,6 +451,7 @@ it('Rearrange messages after Remove item from array', () => {
   expect(rendered.props().error("items.0.name", true)).toEqual('The items.1.name field is required.')
 
 })
+
 it('Rearrange messages after Remove item from array', () => {
 
   const Component = getComponent()
