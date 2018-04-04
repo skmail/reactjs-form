@@ -76,4 +76,14 @@ describe('unflattenRemoveArrayStateUpdate', () => {
     })
   })
 
+  it('Unflatten dot notation array of paths to $splice / remove  array state [update - immutability-helper] ', () => {
+    expect(unflattenRemoveArrayStateUpdate(['path.items.0','path.items.1'])).toEqual({
+      path: {
+        items: {
+          $splice: [[0, 1],[1, 1]]
+        }
+      }
+    })
+  })
+
 })

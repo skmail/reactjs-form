@@ -7,6 +7,8 @@ import getFieldRules from './utils/get-field-rules'
 import getFieldMessages from './utils/get-field-messages'
 import parseCallbackRules from './utils/parse-callback-rules'
 import rearrangeMessageRemoval from './utils/rearrange-message-removal'
+import cancellablePromise  from './utils/cancellable-promise'
+
 import {
   unflatten,
   unflattenArrayStateUpdate,
@@ -28,7 +30,7 @@ const Form = (WrappedComponent, {
       errors: {},
       submitting: false,
       submitted: false,
-      validating:false
+      validating: false
     }
 
     this.validate = this.validate.bind(this)
@@ -49,6 +51,9 @@ const Form = (WrappedComponent, {
     this.onBlur = this.onBlur.bind(this)
     this.reset = this.reset.bind(this)
     this.inputComponent = this.inputComponent.bind(this)
+
+    this.validatingPromises = {}
+
   }
 
   render() {
@@ -93,7 +98,7 @@ const Form = (WrappedComponent, {
     const fieldRules = getFieldRules(el.target.name, parseCallbackRules(rules, [this.props]))
     const fieldMessages = getFieldMessages(el.target.name, messages)
     let validation = new Validator(this.state.inputs, fieldRules, fieldMessages)
-    return new Promise((accept, reject) => {
+    const promise = new Promise((accept, reject) => {
       validation.fails(() => {
         this.setState({
           errors: {
@@ -114,6 +119,9 @@ const Form = (WrappedComponent, {
         accept()
       })
     })
+    const cancellable = cancellablePromise(promise)
+    this.validatingPromises[el.target.name] = cancellable
+    return cancellable.promise
   }
 
   addValue(name, value) {
@@ -240,6 +248,15 @@ const Form = (WrappedComponent, {
         inputComponent={this.inputComponent}
       />
     )
+  }
+
+  cancelRunningValidators(name) {
+    const promise = this.validatingPromises[name]
+    if (!promise) {
+      return
+    }
+    promise.cancel()
+    delete this.validatingPromises[name]
   }
 }
 

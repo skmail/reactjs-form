@@ -81,9 +81,9 @@ export default Form(ArrayInputs, {
 })
 
 ```
-
+ 
 
 ### Warning
  
- 1. Don't use the array index as key prop, this will lead to unexpected issue, use unique identifier instead.
- 2. Always use `[]` as second argument in ``value('input_name',[])`` in the loop 
+ 1. Don't use the array index as key prop,use a unique id instead, [Why?](https://reactjs.org/docs/lists-and-keys.html#keys).
+ 2. Always use `[]` as second argument in ``value('input_name',[])`` to ensure you always use `map` on array.
