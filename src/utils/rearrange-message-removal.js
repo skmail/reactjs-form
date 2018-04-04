@@ -1,7 +1,4 @@
-// @flow
-
-
-const removeErrors = (name,errors) => {
+const removeErrors = (errors,name: string) => {
 
   let errorsName = name.split('.')
 
@@ -29,13 +26,11 @@ const removeErrors = (name,errors) => {
   }, {})
 
 }
-export default (name: string | Array<string>, errors) => {
+export default (name, errors) => {
 
   if(!Array.isArray(name)){
     name = [name]
   }
-  return name.reduce((acc,name) => {
-    return removeErrors(name,errors)
-  },{})
+  return name.reduce(removeErrors,errors)
 
 }

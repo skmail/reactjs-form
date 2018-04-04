@@ -477,6 +477,10 @@ it('Rearrange messages after Remove multiple items from array', () => {
 
   expect(rendered.props().error("items.0.name", true)).toEqual('The items.1.name field is required.')
 
+  rendered.props().removeValue(['items.0'])
+
+  expect(rendered.props().error("items.0.name", true)).toEqual(null)
+
 })
 
 it('Rearrange messages after Remove item from array', () => {
