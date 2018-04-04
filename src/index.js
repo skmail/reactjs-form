@@ -14,6 +14,7 @@ import {
   unflattenArrayStateUpdate,
   unflattenRemoveArrayStateUpdate
 } from './utils/unflatten-object'
+import isObject from "./utils/is-object"
 
 
 const Form = (WrappedComponent, {
@@ -214,8 +215,18 @@ const Form = (WrappedComponent, {
   }
 
   setValue(name, value) {
+
+    if(!isObject(name)){
+      name = {[`${name}.$set`]:value}
+    }else{
+      name = Object.keys(name).reduce((acc,item) => {
+        acc[`${item}.$set`] = name[item]
+        return acc
+      },{})
+    }
+
     this.setState({
-      inputs: update(this.state.inputs, unflatten(`${name}.$set`, value))
+      inputs: update(this.state.inputs, unflatten(name))
     })
   }
 

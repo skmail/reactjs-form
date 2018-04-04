@@ -2,42 +2,47 @@
 
 import getValue from './get-value'
 import {unflatten as unflattenObject} from 'flat'
+import isObject from "./is-object"
 
-export const unflatten = (path: string | Array<string>, value: any): Object => {
+export const unflatten = (path: string | { [string]: any }, value: any): Object => {
 
-  let object
-
-  if (Array.isArray(path)) {
-    object = path.reduce((acc, path, index) => {
-      if (Array.isArray(value)) {
-        acc[path] = value[index]
-      } else {
-        acc[path] = value
-      }
-      return acc
-    }, {})
-  } else {
-    object = {
+  if (typeof path === "string") {
+    path = {
       [`${path}`]: value
     }
   }
 
-  return unflattenObject(object, {object: true})
+  return unflattenObject(path, {object: true})
 }
 
 
-export const unflattenArrayStateUpdate = (state: Object, path: string, value: any): Object => {
-  const pathValue = getValue(state, path)
+export const unflattenArrayStateUpdate = (state: Object, path: any, value: any): Object => {
 
-  if (Array.isArray(pathValue)) {
 
-    return unflatten(`${path}.$push`, [value])
-
-  } else {
-
-    return unflatten(`${path}.$set`, [value])
-
+  if(!isObject(path)){
+    path = {[path]:value}
   }
+
+  const o = Object.keys(path).reduce((acc,item) => {
+
+    const pathValue = getValue(state, item)
+
+    if (Array.isArray(pathValue)) {
+
+      acc[`${item}.$push`] = [path[item]]
+
+    } else {
+
+      acc[`${item}.$set`] = [path[item]]
+
+    }
+
+    return acc
+  },{})
+
+
+  return unflatten(o)
+
 }
 
 
@@ -47,28 +52,25 @@ export const unflattenRemoveArrayStateUpdate = (path: string | Array<string>): O
     path = [path]
   }
 
-  const {paths, removals} = path.reduce((acc, path) => {
+  const paths = path.reduce((acc, path) => {
 
     const pathSegments: Array<any> = path.split('.')
 
     const index: number = parseInt(pathSegments.pop(), 10)
 
-    const splice = `${pathSegments.join('.')}.$splice`
+    const splicePath = `${pathSegments.join('.')}.$splice`
 
-    let pathIndex = acc.paths.indexOf(splice)
-
-    if(pathIndex === -1){
-      acc.paths.push(splice)
-      acc.removals.push([[index, 1]])
-    }else{
-      acc.removals[pathIndex].push([index, 1])
+    if (acc[splicePath]) {
+      acc[splicePath].push([index, 1])
+    } else {
+      acc[splicePath] = [[index, 1]]
     }
 
     return acc
 
-  }, {paths: [], removals: []})
+  }, {})
 
-  return unflatten(paths, removals)
+  return unflatten(paths)
 }
 
 

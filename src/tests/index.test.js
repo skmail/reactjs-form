@@ -391,6 +391,30 @@ it('Add an item to array', () => {
   expect(rendered.props().value('items', []).length).toEqual(2)
 })
 
+
+it('Add an item to array ', () => {
+
+  const Component = getComponent()
+  const rendered = shallow(<Component/>)
+
+  expect(rendered.props().value('items', []).length).toEqual(0)
+
+  rendered.props().addValue({
+    items:{
+      id: 1
+    }
+  })
+  expect(rendered.props().value('items.0')).toEqual({
+    id: 1
+  })
+  rendered.props().addValue({
+    items:{
+      id: 1
+    }
+  })
+  expect(rendered.props().value('items', []).length).toEqual(2)
+
+})
 describe('Remove item from array', () => {
 
   const Component = getComponent()
@@ -400,7 +424,6 @@ describe('Remove item from array', () => {
   it('value return default value', () => {
     expect(rendered.props().value('items', []).length).toEqual(0)
   })
-
 
   it('Array updated', () => {
     rendered.props().addValue('items', 1)
@@ -418,9 +441,19 @@ describe('Remove item from array', () => {
   })
 
   it('Array updated', () => {
-    rendered.props().removeValue('items.0')
     rendered.props().removeValue('items.1')
+    rendered.props().removeValue('items.0')
     expect(rendered.props().value('items', []).length).toEqual(2)
+  })
+
+
+  it('It Removes Multiple values with one shot', () => {
+
+    rendered.props().removeValue([
+      'items.1',
+      'items.0',
+    ])
+    expect(rendered.props().value('items', []).length).toEqual(0)
   })
 
 
@@ -640,6 +673,46 @@ describe('setValues', () => {
   })
 
 })
+
+
+describe('setValue', () => {
+
+
+  const Component = getComponent()
+  const rendered = mount(<Component/>)
+
+  const formProps = rendered.find(MyForm).first().props()
+
+
+  it('Set Single Value', () => {
+    formProps.setValue("name","Solaiman")
+    expect(formProps.value("name")).toEqual("Solaiman")
+  })
+
+  it('Set Multiple Values', () => {
+    formProps.setValue({
+      first_name:"Solaiman",
+      last_name:"Kmail"
+    })
+    expect(formProps.value("first_name")).toEqual("Solaiman")
+    expect(formProps.value("last_name")).toEqual("Kmail")
+  })
+
+  // it('Return single value', () => {
+  //   expect(formProps.value('name')).toEqual(values.name)
+  // })
+  //
+  // it('Return array', () => {
+  //   expect(formProps.value('items')).toEqual(values.items)
+  // })
+  //
+  // it('Return default value', () => {
+  //   expect(formProps.value('age', 28)).toEqual(28)
+  // })
+
+
+})
+
 
 describe('Reset', () => {
 
