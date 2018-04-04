@@ -2,7 +2,7 @@
   "name": "reactjs-form",
   "description": "A higher order component decorator for forms using React Component state",
   "main": "./lib/index.js",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "author": "Solaiman Kmail <psokmail@gmail.com> (https://github.com/skmail)",
   "license": "MIT",
   "repository": {
