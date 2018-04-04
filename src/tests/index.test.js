@@ -452,6 +452,33 @@ it('Rearrange messages after Remove item from array', () => {
 
 })
 
+
+it('Rearrange messages after Remove multiple items from array', () => {
+
+  const Component = getComponent()
+
+  const rendered = shallow(<Component/>)
+
+  rendered.props().addValue('items', {
+    name: "solaiman"
+  })
+
+  rendered.props().addValue('items', {
+    name: ""
+  })
+
+  rendered.props().validate().then(() => {
+
+  }).catch(() => {
+
+  })
+
+  rendered.props().removeValue(['items.0'])
+
+  expect(rendered.props().error("items.0.name", true)).toEqual('The items.1.name field is required.')
+
+})
+
 it('Rearrange messages after Remove item from array', () => {
 
   const Component = getComponent()

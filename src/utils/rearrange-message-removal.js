@@ -1,7 +1,14 @@
-export default (name, errors) => {
+// @flow
+
+
+const removeErrors = (name,errors) => {
+
   let errorsName = name.split('.')
+
   const index = parseInt(errorsName.pop(), 10)
+
   errorsName = errorsName.join('.') + '.'
+
   return Object.keys(errors).reduce((acc, item) => {
     if (item.startsWith(errorsName)) {
       let remainingName = item.substr(errorsName.length, item.length).split('.')
@@ -20,4 +27,15 @@ export default (name, errors) => {
     }
     return acc
   }, {})
+
+}
+export default (name: string | Array<string>, errors) => {
+
+  if(!Array.isArray(name)){
+    name = [name]
+  }
+  return name.reduce((acc,name) => {
+    return removeErrors(name,errors)
+  },{})
+
 }
